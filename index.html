@@ -2,33 +2,43 @@
 <html>
     <head>
         <meta charset="utf-8"/>
-        <script type="text/javascript" src='toDoList.js'></script>
-        <link type="stylesheet/css" href='styles.css'/>
+        <script type="text/javascript" src='./toDoList.js'></script>
+        <link rel="stylesheet" href='./styles.css'/>
     </head>
 
-    <body>
-
-        <nav class="menubar">
-
-            <label for="cardName"> Input Card Name:</label>
-            <input type="text" id="cardName" name="cardName"/>
-            <button onclick="createNewCard('cardName')"> Create New Card</button>
+    <body style='background-color: #666666;'>
+        <nav class="menubar" >
+            <div class = 'cardMenu'>
+                <label for="cardName"> Input Card Name:</label>
+                <br/>
+                <input type="text" id="cardName" name="cardName"/>
+                <br/>
+                <button onclick="createNewCard('cardName')"> Create New Card</button>
+            </div>
             
-            <br/>
-
-            <label for="cardSelector">Select Card:</label>
-            <select id="cardSelector" name="cardSelector"> </select>
-            
-            <label for="taskName">Input Task Name:<label>
-            <input type="text" id="taskName" name="taskName"/>
-            <button onclick="createNewTask('taskName', 'cardSelector')"> Create New Task</button>
+            <div class="taskMenu">
+                <div>
+                    <label for="cardSelector">Select Card:</label>
+                    <br/>
+                    <select id="cardSelector" name="cardSelector"> 
+                        <option value=''>None</option>
+                    </select>
+                </div>
                 
+                <br/>
+
+                <div>                    
+                    <label for="taskName">Input Task Name:<label>
+                    <br/>
+                    <input type="text" id="taskName" name="taskName"/>
+                    <br/>
+                    <button onclick="createNewTask('taskName', 'cardSelector')"> Create New Task</button>   
+                </div>
+            </div>
         </nav>
 
-
-        <section>
-            
-
+        <section class='sectionPage'>
+                    
 
         </section>
 

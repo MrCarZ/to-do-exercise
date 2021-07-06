@@ -1,4 +1,31 @@
 nav, .menubar{
-    border-color: #000000;
-    border-width: 2px;
+    text-align: center;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardMenu{
+    
+}
+
+.taskMenu{
+    box-shadow: black;
+    display: flex;
+    flex-direction: row;
+}
+
+.sectionPage{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.cardPage{
+    background-color: white;
+    text-align: center;
+    width: 25%;
+    margin: 15px;
 }
