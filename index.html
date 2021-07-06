@@ -3,16 +3,30 @@
     <head>
         <meta charset="utf-8"/>
         <script type="text/javascript" src='toDoList.js'></script>
+        <link type="stylesheet/css" href='styles.css'/>
     </head>
 
     <body>
-        
-        <nav>
-            <button onclick="createNewCard()"> Create New Card</button>
-            <button onclick="createNewTask(1)"> Create New Task</button>
+
+        <nav class="menubar">
+
+            <label for="cardName"> Input Card Name:</label>
+            <input type="text" id="cardName" name="cardName"/>
+            <button onclick="createNewCard('cardName')"> Create New Card</button>
+            
+            <br/>
+
+            <label for="cardSelector">Select Card:</label>
+            <select id="cardSelector" name="cardSelector"> </select>
+            
+            <label for="taskName">Input Task Name:<label>
+            <input type="text" id="taskName" name="taskName"/>
+            <button onclick="createNewTask('taskName', 'cardSelector')"> Create New Task</button>
+                
         </nav>
 
-        <section class="card">
+
+        <section>
             
 
 
