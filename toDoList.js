@@ -4,17 +4,14 @@ const createNewCard = (cardName) => {
 
 
     /* Create HTML Structure named with the cardName */
-    const newCard = document.createElement("div");
+    const newCard = document.createElement("ul");
     newCard.id = value;
+    newCard.style.display = "flex";
     
     const listTitle = document.createElement("h2");
     listTitle.innerText = value;
     newCard.appendChild(listTitle);
 
-
-    const newList = document.createElement("ul");
-    newList.id = value + "-list";
-    newCard.appendChild(newList);
     newCard.className = 'cardPage';
 
     const currentCard = document.getElementsByTagName("section");
@@ -27,7 +24,9 @@ const createNewCard = (cardName) => {
     newSelector.innerText = value;
     cardSelector.appendChild(newSelector);
 
-    
+    const str = JSON.stringify(currentCard[0].childNodes);
+    console.log(str);
+    console.log(JSON.parse(str));
 }
 
 const createNewTask = (task, cardId) => {
@@ -37,6 +36,8 @@ const createNewTask = (task, cardId) => {
     
     /* Add List Item -> Checks for cardName existence */
     const List = document.getElementById(cardName);
+
+    console.log(List.childElementCount);
     
     if(List === null){
         alert("This Card Name Don't Exist.")
@@ -44,6 +45,7 @@ const createNewTask = (task, cardId) => {
     else{
         const newDiv = document.createElement("div");
         newDiv.id = value + '-task';
+        newDiv.style.order = List.childElementCount; 
         const newTask = document.createElement("li");
         const newRange = document.createElement("input");
         newRange.type = "range";
@@ -52,10 +54,30 @@ const createNewTask = (task, cardId) => {
         newRange.max = 5;
 
         const newDelete = document.createElement("button");
-        newDelete.innerText = 'kkk'
-        console.log(newDelete);
+        newDelete.innerText = 'trash'
         newDelete.onclick = () => document.getElementById(newDiv.id).remove();;
 
+        const newUp = document.createElement("button");
+        newUp.innerText = 'Up'
+        /*
+        newUp.onclick = () => {
+            if(newDiv.previousElementSibling !== null){
+                [newDiv.previousElementSibling.style.order, newDiv.style.order] =  [newDiv.style.order, newDiv.previousElementSibling.style.order];
+            }
+            console.log(newDiv.previousElementSibling.style);
+        }*/
+
+        const newBottom = document.createElement("button");
+        newBottom.innerText = 'Bottom'
+        /*
+        newBottom.onclick = () => {
+            if(newDiv.nextElementSibling !== null){
+                [newDiv.nextElementSibling.style.order, newDiv.style.order] =  [newDiv.style.order, newDiv.nextElementSibling.style.order];
+            }
+        }*/
+
+        newDiv.appendChild(newUp);
+        newDiv.appendChild(newBottom);
         newDiv.appendChild(newDelete);
         newDiv.appendChild(newTask);
         newDiv.appendChild(newRange);

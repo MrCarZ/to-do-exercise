@@ -28,4 +28,6 @@ nav, .menubar{
     text-align: center;
     width: 25%;
     margin: 15px;
+    display: flex;
+    flex-direction: column;
 }
