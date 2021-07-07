@@ -6,8 +6,8 @@
         <link rel="stylesheet" href='./styles.css'/>
     </head>
 
-    <body style='background-color: #666666;'>
-        <nav class="menubar" >
+    <body onload="load()" style='background-color: #666666;'>
+        <nav class="menubar" id="menubar">
             <div class = 'cardMenu'>
                 <label for="cardName"> Input Card Name:</label>
                 <br/>
@@ -20,8 +20,8 @@
                 <div>
                     <label for="cardSelector">Select Card:</label>
                     <br/>
-                    <select id="cardSelector" name="cardSelector"> 
-                        <option value=''>None</option>
+                    <select id="cardSelector" name="cardSelector" required> 
+                        
                     </select>
                 </div>
                 
@@ -37,9 +37,9 @@
             </div>
         </nav>
 
-        <section class='sectionPage'>
+        <section class='sectionPage' id='sectionPage'>
 
-
+        
         </section>
 
     </body>
