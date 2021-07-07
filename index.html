@@ -7,13 +7,13 @@
     </head>
 
     <body onload="load()" style='background-color: #666666;'>
-        <nav class="menubar" id="menubar">
+        <nav class="menubar" >
             <div class = 'cardMenu'>
                 <label for="cardName"> Input Card Name:</label>
                 <br/>
                 <input type="text" id="cardName" name="cardName"/>
                 <br/>
-                <button onclick="createNewCard('cardName')"> Create New Card</button>
+                <button onclick="createNewCard(`${document.getElementById('cardName').value}`)"> Create New Card</button>
             </div>
             
             <div class="taskMenu">
@@ -32,7 +32,7 @@
                     <br/>
                     <input type="text" id="taskName" name="taskName"/>
                     <br/>
-                    <button onclick="createNewTask('taskName', 'cardSelector')"> Create New Task</button>   
+                    <button onclick="createNewTask(`${document.getElementById('taskName').value}`, `${document.getElementById('cardSelector').value}`, 1)"> Create New Task</button>   
                 </div>
             </div>
         </nav>
