@@ -32,12 +32,12 @@
                     <br/>
                     <input type="text" id="taskName" name="taskName"/>
                     <br/>
-                    <button onclick="createNewTask('taskName', 'cardSelector')"> Create New Task</button>   
+                    <button onclick="createNewTask(`${document.getElementById('taskName').value}`, `${document.getElementById('cardSelector').value}`, 1)"> Create New Task</button>   
                 </div>
             </div>
         </nav>
 
-        <section class='sectionPage'>
+        <section class='sectionPage' id='sectionPage'>
 
 
         </section>

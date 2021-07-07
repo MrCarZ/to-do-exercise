@@ -1,88 +1,138 @@
-const createNewCard = (cardName) => {
-    /* Get Value from Input Form */
-    const value = document.getElementById(cardName).value;
+/*const load = () =>{
+    const sectionInfo = localStorage.getItem("sectionInfo");
+    const cardsSelectorInfo = localStorage.getItem("cardSelectorInfo");
+    const menuBar = document.getElementById("menubar");
+    const selectCard = document.getElementById("cardSelector");
 
+    console.log(sectionInfo);
 
-    /* Create HTML Structure named with the cardName */
-    const newCard = document.createElement("ul");
-    newCard.id = value;
-    newCard.style.display = "flex";
+    if(sectionInfo !== null && cardsSelectorInfo !== null){
+        menuBar.insertAdjacentHTML('afterend', JSON.parse(sectionInfo));
+        selectCard.insertAdjacentHTML('afterbegin', JSON.parse(cardsSelectorInfo));    
+    }
+
+    const deleteButtons = document.getElementsByClassName('trash-button');
     
-    const listTitle = document.createElement("h2");
-    listTitle.innerText = value;
-    newCard.appendChild(listTitle);
+    for(let i = 0; i<deleteButtons.length; i++){
+        deleteButtons[i].addEventListener('click', () => {deleteButtons[i].parentElement.remove()});
+    }
+}*/
 
-    newCard.className = 'cardPage';
+const generateHTMLElement = (tag, atributes) => {
+    const newElement = document.createElement(tag);
+    const properties = Object.getOwnPropertyNames(atributes);
+    properties.map((value) => {newElement[`${value}`] = atributes[`${value}`]});
+    return newElement;
+};
 
-    const currentCard = document.getElementsByTagName("section");
-    currentCard[0].appendChild(newCard);
+const sortByPriority = (cardName) => {
+    const cardsInfo = JSON.parse(localStorage.getItem("cardsInfo"));
+    cardsInfo[`${cardName}`].sort((a, b) => b.priority - a.priority);
 
-    /* Add created Card in Selector */
-    const cardSelector = document.getElementById("cardSelector"); 
-    const newSelector = document.createElement("option");
-    newSelector.value = value;
-    newSelector.innerText = value;
-    cardSelector.appendChild(newSelector);
+    const card = document.getElementById(cardName);
+    const tasks = Array.from(card.childNodes);
 
-    const str = JSON.stringify(currentCard[0].childNodes);
-    console.log(str);
-    console.log(JSON.parse(str));
+    tasks.map((value) => {
+        value.remove()
+    });
+
+    console.log(cardsInfo[`${cardName}`]);
+    cardsInfo[`${cardName}`].map((value) => {createNewTask(value.task, cardName, value.priority)});
+
+    localStorage.setItem("cardsInfo", JSON.stringify(cardsInfo));
+
 }
 
-const createNewTask = (task, cardId) => {
-    /* Get new task name and selected cardName */  
-    const value = document.getElementById(task).value;
-    const cardName = document.getElementById(cardId).value;
+const createNewCard = (cardName) => {
     
-    /* Add List Item -> Checks for cardName existence */
+    const value = document.getElementById(cardName).value;
+    const cardSelector = document.getElementById("cardSelector");
+    const section = document.getElementById("sectionPage");
+
+    /* Create HTML Structure named with the cardName */
+    const newCard = generateHTMLElement("div", {"id": value, "style.display": "flex", "className": 'cardPage'});
+    const newList = generateHTMLElement("ul", {"id": value+"-list", "className": "cardList"});
+    const listTitle = generateHTMLElement("h2", {"innerText": value});
+    const sortButton = generateHTMLElement("button", {"innerText": "Sort", "onclick": () => sortByPriority(value)});
+    
+    section.appendChild(newCard);
+    section.appendChild(listTitle);
+    section.appendChild(sortButton);
+    section.appendChild(newList);
+
+    /* Add created Card in Selector */
+    const newSelector = generateHTMLElement("option", {"value": value, "innerText": value});
+    
+    cardSelector.appendChild(newSelector);
+
+    const oldCardInformation = JSON.parse(localStorage.getItem("cardsInfo")); 
+
+    const updatedCardInformation = {...oldCardInformation, [`${value}`]:[]};
+    localStorage.setItem("cardsInfo", JSON.stringify(updatedCardInformation));
+
+
+
+/*
+    const cardsData = JSON.stringify(cardSelector.outerHTML);
+    const sectionData= JSON.stringify(section.outerHTML);
+
+    localStorage.setItem("sectionInfo", sectionData);
+    localStorage.setItem("cardSelectorInfo", cardsData);
+*/  
+}
+
+const createNewTask = (task, cardId, priority) => {
+    /* Get new task name and selected cardName */  
+    const value = task;
+    const cardName = cardId;
     const List = document.getElementById(cardName);
 
-    console.log(List.childElementCount);
     
+    /* Add List Item -> Checks for cardName existence */    
     if(List === null){
-        alert("This Card Name Don't Exist.")
+        alert("This Card Name Doesn't Exist.")
     }
     else{
-        const newDiv = document.createElement("div");
-        newDiv.id = value + '-task';
-        newDiv.style.order = List.childElementCount; 
-        const newTask = document.createElement("li");
-        const newRange = document.createElement("input");
-        newRange.type = "range";
-        newRange.id = value + "-priority";
-        newRange.min = 1;
-        newRange.max = 5;
+        const newTask = generateHTMLElement("li", {"id": List.childElementCount+'-task', "style.order": List.childElementCount});
+        const newDescription = generateHTMLElement("p", {"innerText": value}); 
+        const newRange = generateHTMLElement("input", {"type": "range", "id": value+'-priority', "value": priority ,"min":0, "max": 5, "onchange": () => updatePriority(value+'-priority', cardName)});
+        const newDelete = generateHTMLElement("button", {"className": "trash-button", "innerText": "trash"});
+        console.log(newRange.id);
+        
+        List.appendChild(newTask);
+        newTask.appendChild(newDescription);
+        newTask.appendChild(newRange);
+        newTask.appendChild(newDelete);
 
-        const newDelete = document.createElement("button");
-        newDelete.innerText = 'trash'
-        newDelete.onclick = () => document.getElementById(newDiv.id).remove();;
 
-        const newUp = document.createElement("button");
-        newUp.innerText = 'Up'
-        /*
-        newUp.onclick = () => {
-            if(newDiv.previousElementSibling !== null){
-                [newDiv.previousElementSibling.style.order, newDiv.style.order] =  [newDiv.style.order, newDiv.previousElementSibling.style.order];
-            }
-            console.log(newDiv.previousElementSibling.style);
-        }*/
+        newDelete.addEventListener('click',() => console.log(newDelete.parentElement.remove()), false)
+        
+        let cardsInfo = JSON.parse(localStorage.getItem('cardsInfo'));
 
-        const newBottom = document.createElement("button");
-        newBottom.innerText = 'Bottom'
-        /*
-        newBottom.onclick = () => {
-            if(newDiv.nextElementSibling !== null){
-                [newDiv.nextElementSibling.style.order, newDiv.style.order] =  [newDiv.style.order, newDiv.nextElementSibling.style.order];
-            }
-        }*/
-
-        newDiv.appendChild(newUp);
-        newDiv.appendChild(newBottom);
-        newDiv.appendChild(newDelete);
-        newDiv.appendChild(newTask);
-        newDiv.appendChild(newRange);
-
-        List.appendChild(newDiv);
-        newTask.appendChild(document.createTextNode(value));
+        cardsInfo[`${cardName}`].push({"task": value, "priority": newRange.value});
+        
+        localStorage.setItem('cardsInfo', JSON.stringify(cardsInfo));
+    /*  
+        const currentCard = document.getElementsByTagName("section");
+        const sectionData= JSON.stringify(currentCard[0].outerHTML);
+        localStorage.setItem("sectionInfo", sectionData);
+    */
     }
+}
+
+const updatePriority = (id, cardName) => {
+    let cardsInfo = JSON.parse(localStorage.getItem('cardsInfo'));
+    const task = document.getElementById(id).previousElementSibling.innerText;
+    const priority = document.getElementById(id).value;
+    cardsInfo[`${cardName}`].find((value) => checkTask(value, task, priority));
+    
+    localStorage.setItem('cardsInfo', JSON.stringify(cardsInfo));
+}
+
+const checkTask = (value, task, priority) => {
+    if (value.task === task) {
+        value.priority = priority;
+        return true;
+    }
+    return false;
 }
